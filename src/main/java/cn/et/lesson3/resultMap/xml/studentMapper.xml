@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.et.lesson3.resultMap.xml.StudentMapper">
+  
+
+
+  <!-- 映射多对一关系 ：多个学生属于同一个班级-->
+  
+  <resultMap type="student" id="studentMap" autoMapping="true">
+  	<!-- 映射主键 -->
+  	<id column="sid" property="sid"/>
+	
+  	<!-- 类属性是个对象 -->
+  	<association property="grade" column="gid" fetchType="lazy" select="cn.et.lesson3.resultMap.xml.GradeMapper.queryGradeByGid"></association>
+  </resultMap>
+
+
+
+  <select id="queryStudent" resultMap="studentMap">    
+     select * from student where sid=#{0}
+  </select>
+  
+  
+  
+  
+  <!-- 根据班级来查询学生信息 -->
+  <select id="queryStudentByGid" resultType="student">    
+     select * from student where gid=#{0}
+  </select>
+  
+  
+</mapper>

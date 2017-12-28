@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 引入properties文件 -->
+	<properties resource="jdbc.properties"></properties>
+
+
+	<!-- 配置变量类型设置别名 -->
+	<typeAliases>
+	  <typeAlias type="cn.et.lesson2.Food" alias="food"/>
+		
+		<!-- <package name="指定范围(可以是一个具体的类或者某个包下的所有的类)" />
+		
+		<package name="cn.et.lesson2"/> -->
+	</typeAliases>
+
+
+
+	<environments default="development">
+		<environment id="development">
+			<!-- 事务管理器 默认使用jdbc事务（自动提交） -->
+			<transactionManager type="JDBC" />
+
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${usernamed}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 映射文件的路径 -->
+	<mappers>
+		<mapper resource="cn/et/lesson2/xml/foodMapper.xml" />
+	</mappers>
+	
+</configuration>

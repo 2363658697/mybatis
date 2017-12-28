@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.et.lesson4.xml.StudentMapper">
+  
+  	  <!-- 
+     	if 判断条件是否满足 满足 就将if中的sql 自动拼接到主sql
+     	
+	     where 自动判断第一个条件是否存在where 如果没有 where 追加 
+	         	同时 去掉第一个and
+	     trim：     	
+              prefix配置的参数会被添加 在sql语句开始的地方
+              prefixOverrides sql语句首次出现的参数会被覆盖
+              
+         <trim prefix="where" prefixOverrides="and"></trim>========<where>标签  
+   -->
+  	<select id="queryStudent" resultType="student">
+  		select * from student 
+  		<where>
+	  		<if test="gid!=null">
+	  			and gid=${gid}
+	  		</if>
+	  		<if test="sname!=null">
+	  			and sname like '%${sname}%'
+	  		</if> 		
+  		</where>			
+  	</select>
+  	
+	<!-- choose when otherwise :类似于if elseif else-->
+  	<select id="queryBySex" resultType="student">
+  		select * from student where 1=1
+  		<choose>
+  			<when test="sex!=null">
+  				and sex=#{sex}
+  			</when>
+  			<otherwise>
+  				and sex=1
+  			</otherwise>
+  		</choose>		
+  	</select>
+  	
+  	  <!-- 
+    set标签   自动添加一个set  动态去掉最后一个条件的,
+       trim实现set  <trim prefix="set" prefixOverrides="" suffixOverrides="," suffix=""> 
+   -->
+  	<update id="updateStudent">
+  		update student 
+  		<set>
+  			<if test="sname!=null">
+  				sname=#{sname},
+  			</if>
+  			<if test="gid!=null">
+  				gid=#{gid},
+  			</if>
+  			<if test="sex!=null">
+  				sex=#{sex}
+  			</if>
+  		</set>
+  		where sid=#{sid}
+  	</update>
+  	
+  	  <!-- 
+     foreach 
+       open表示 循环开始之前 追加的sql
+       close表示 循环结束之后追加的sql
+       collection指定传入的值得集合
+       separator 非最后一次的循环 值上 添加 分隔符 ,
+       item表示每一次循环的值被存储的变量名
+   -->
+  	<select id="queryStudentbyAnyGrade" resultType="student">
+  		 select * from student 
+      <foreach item="gid" collection="gradeList" open="where gid in(" close=")" separator=",">
+          #{gid}
+      </foreach>
+  	
+  	</select>
+  		
+</mapper>

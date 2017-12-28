@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空間 用於區分多個文件中的相同id
+   比如 a.xml (namespace=a)
+   id="test"
+    b.xml (namespace=b)
+   id="test"
+   a.test
+   b.test
+ -->
+<mapper namespace="a">
+  <select id="selectFood" resultType="java.util.Map">
+    select * from food 
+  </select>
+  <select id="selectFoodById" resultType="java.util.Map">
+    select * from food where foodid=1
+  </select>
+  
+   <!-- 查询的条件
+          10，青椒
+          map={
+            myprice=10,
+            myfoodname=青椒
+          }
+                  重点：   
+                       使用 #{键}方式 实际上 是使用 占位符  ? 来替代 
+                       使用 ${键}方式 实际上 是使用值 直接替换对应的键 注意 如果是字符串 手工添加  ' '
+          
+    -->
+   <select id="selectFoodByParam" resultType="java.util.Map">
+    select * from food where price=${myprice} and foodname='${myfoodname}'
+   </select>
+   
+   <insert id="saveFood">
+   	    insert into foods values(FOOD_SEC.nextval,#{foodname},#{price})
+   </insert>
+   
+  
+  
+</mapper>

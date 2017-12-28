@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+  <!-- jdbc调用存储过程语法 
+         {call 存储过程名(?,?)}
+                       函数语法
+         {?=call 函数名(?,?)}
+  -->
+
+<mapper namespace="proc">
+  <!-- 存储过程 -->
+  
+    <select id="call_pro_add" resultType="java.util.Map" statementType="CALLABLE">
+  {call pro_add(
+  #{p1,mode=IN,jdbcType=NUMERIC},
+  #{p2,mode=IN,jdbcType=NUMERIC},
+  #{result,mode=OUT,jdbcType=NUMERIC})}
+  </select>
+  
+   <!-- 函数-->
+  <select id="call_fun_add" resultType="java.util.Map" statementType="CALLABLE">
+  {#{result,mode=OUT,jdbcType=NUMERIC}=call fun_add(
+  #{p1,mode=IN,jdbcType=NUMERIC},
+  #{p2,mode=IN,jdbcType=NUMERIC})
+  }
+  </select>
+
+</mapper>

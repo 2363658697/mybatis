@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+
+<mapper namespace="cn.et.lesson3.resultMap.xml.GradeMapper">
+
+	<!-- 映射实体类中属性名和表中列名不同的属性 
+	
+	autoMapping="true" 自动映射属性名和列名相同的属性  默认值是true
+	autoMapping="false" 关闭自动映射
+	
+	  association：映射类属性
+	  collection：映射集合（类属性）
+	  property：实体类中的属性
+	  column：数据库表中的列名
+	-->
+	<resultMap type="grade" id="gradeMap" autoMapping="true">
+		<!-- 映射主键列-->
+		<id column="gid" property="gid" /> 
+		
+		<!-- 映射非主键列 -->
+		<result column="gname" property="gnamed"/>
+	
+	</resultMap>
+
+  
+  <select id="queryAllGrade" resultMap="gradeMap">    
+     select * from grade
+  </select>
+
+	<!-- 根据查询学生获取其班级信息 -->
+  <select id="queryGradeByGid" resultMap="gradeMap">    
+     select * from grade where gid=#{0}
+  </select>
+  
+  
+  
+  
+  <!-- 映射一对多：一个班级下有多个学生 -->
+  
+  	<resultMap type="grade" id="gradeOne" autoMapping="true">
+		<!-- 映射主键列 -->
+		<id column="gid" property="gid" /> 
+		
+		<!-- 映射非主键列 -->
+		<result column="gname" property="gnamed"/>
+		<!-- 类属性是个集合 -->
+		<collection property="students" column="gid" javaType="list" select="cn.et.lesson3.resultMap.xml.StudentMapper.queryStudentByGid"></collection>
+	
+	</resultMap>
+  
+  
+  <select id="queryGrade" resultMap="gradeOne">    
+     select * from grade where gid=#{0}
+  </select>
+  
+  
+</mapper>
